@@ -3,11 +3,13 @@
 To start a new AWS Cloud Development Kit (CDK) project, you can use either Python or TypeScript as your language. Use the following commands:
 
 1. Install the AWS CDK CLI if you haven't already:
+
    ```bash
    npm install -g aws-cdk
    ```
 
 2. Create a new directory for your project and navigate into it:
+
    ```bash
    mkdir my-cdk-project
    cd my-cdk-project
@@ -26,6 +28,7 @@ To start a new AWS Cloud Development Kit (CDK) project, you can use either Pytho
 This will set up a new CDK project structure in your chosen language. Follow the prompts to complete the setup, then install the required dependencies as instructed in the generated README file.
 
 ---
+
 ## 9. Removing CloudFormation Template Files from S3 Buckets
 
 When you deploy resources using CloudFormation, the template file (such as `2025-11-13T002258.728Zty4-s3template.json`) may also be uploaded to your S3 bucket. These files are not deleted automatically and should be removed to keep your bucket clean and avoid unnecessary storage costs.
