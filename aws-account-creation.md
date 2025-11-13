@@ -1,6 +1,47 @@
-# AWS Account Creation & Secure Setup Guide
+## 10. Creating a New AWS CDK Project (Python or TypeScript)
 
-This guide walks you through creating a new AWS account, securing it, and preparing it for AWS CLI/SDK use with Free Tier.
+To start a new AWS Cloud Development Kit (CDK) project, you can use either Python or TypeScript as your language. Use the following commands:
+
+1. Install the AWS CDK CLI if you haven't already:
+   ```bash
+   npm install -g aws-cdk
+   ```
+
+2. Create a new directory for your project and navigate into it:
+   ```bash
+   mkdir my-cdk-project
+   cd my-cdk-project
+   ```
+
+3. Initialize a new CDK project:
+   - For Python:
+     ```bash
+     cdk init app --language python
+     ```
+   - For TypeScript:
+     ```bash
+     cdk init app --language typescript
+     ```
+
+This will set up a new CDK project structure in your chosen language. Follow the prompts to complete the setup, then install the required dependencies as instructed in the generated README file.
+
+---
+## 9. Removing CloudFormation Template Files from S3 Buckets
+
+When you deploy resources using CloudFormation, the template file (such as `2025-11-13T002258.728Zty4-s3template.json`) may also be uploaded to your S3 bucket. These files are not deleted automatically and should be removed to keep your bucket clean and avoid unnecessary storage costs.
+
++To delete a specific template file from your S3 bucket, use the following AWS CLI command (with your actual bucket and file name):
+
+- +`bash
++aws s3 rm s3://cf-templates-jj9t1tsbr0rr-us-east-2/2025-11-13T002258.728Zty4-s3template.json
++`
+- +This command will delete only the specified file from the bucket. Remember to remove any other template files you no longer need.
+
+  ***
+
+# AWS Account Creation & S3 Management Guide
+
+This guide walks you through creating a new AWS account, securing it, preparing it for AWS CLI/SDK use with Free Tier, and managing S3 buckets safely and efficiently.
 
 ---
 
@@ -91,6 +132,51 @@ For more details, see the [best practices for managing AWS access keys](https://
 
 - Explore AWS services from the console
 - Monitor your Free Tier usage to avoid unexpected charges
+
+---
+
+## 7. Automatically Clean Up S3 Buckets with Lifecycle Rules
+
+To avoid unnecessary storage costs or to keep test environments tidy, you can configure your S3 bucket to automatically delete its contents after a set period using a lifecycle rule in your CloudFormation template.
+
+**Example CloudFormation snippet to expire all objects in a bucket after 1 day:**
+
+```json
+{
+  "Resources": {
+    "MyS3Bucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "LifecycleConfiguration": {
+          "Rules": [
+            {
+              "Status": "Enabled",
+              "ExpirationInDays": 1
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+```
+
+This ensures all objects in the bucket are automatically deleted 1 day after creation. Adjust `ExpirationInDays` as needed for your use case.
+
+---
+
+## 8. Deleting an S3 Bucket Using the AWS CLI
+
+If you need to completely remove an S3 bucket and all its contents, use the AWS CLI:
+
+```bash
+aws s3 rb s3://your-bucket-name --force
+```
+
+- Replace `your-bucket-name` with the actual name of your bucket.
+- The `--force` flag deletes all objects in the bucket before removing the bucket itself.
+
+**Warning:** This action is irreversible. All data in the bucket will be permanently deleted.
 
 ---
 
